@@ -10,3 +10,16 @@ services:
     build: ./frontend
     ports:
       - "3000:3000"
+
+  mobile:
+    build: ./mobile
+    volumes:
+      - ./mobile:/app
+      - /app/node_modules # Prevents host modules from overriding container modules
+    environment:
+      - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
+      - REACT_NATIVE_PACKAGER_HOSTNAME=192.168.1.XX # <--- YOUR LAPTOP IP HERE
+    ports:
+      - "8081:8081"
+    stdin_open: true
+    tty: true

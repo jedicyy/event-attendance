@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 class Event(models.Model):
     title = models.CharField(max_length=255)
@@ -12,7 +12,7 @@ class Event(models.Model):
 
 
 class Attendance(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     checked_in = models.BooleanField(default=True)
     check_in_time = models.DateTimeField(auto_now_add=True)

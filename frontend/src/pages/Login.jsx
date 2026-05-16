@@ -9,30 +9,52 @@ function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
 
-        axios.post('http://127.0.0.1:8000/auth/jwt/create/', {
-            username,
-            password
-        })
+        try {
 
-        .then(response => {
+            const response = await axios.post(
+                'http://127.0.0.1:8000/api/auth/jwt/create/',
+                {
+                    username,
+                    password
+                }
+            );
 
-            localStorage.setItem('token', response.data.access);
+            // SAVE JWT TOKEN
+            const token = response.data.access;
 
-            alert('Login Successful');
+            localStorage.setItem("token", token);
 
-            navigate('/home');
+            // GET CURRENT USER INFO
+            const userResponse = await axios.get(
+                'http://127.0.0.1:8000/api/me/',
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
-        })
+            // SAVE ROLE
+            localStorage.setItem("role", userResponse.data.role);
 
-        .catch(error => {
+            alert('Login successful');
+
+            // REDIRECT BASED ON ROLE
+            if (userResponse.data.role === 'admin') {
+                navigate('/admin');
+            } else {
+                navigate('/home');
+            }
+
+        } catch (error) {
 
             console.log(error);
 
             alert('Invalid Credentials');
 
-        });
+        }
 
     };
 

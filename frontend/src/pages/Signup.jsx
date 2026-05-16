@@ -10,16 +10,15 @@ function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [re_password, setRePassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     const handleSignup = () => {
 
-        axios.post('http://127.0.0.1:8000/auth/users/', {
-
+        axios.post('http://127.0.0.1:8000/api/auth/users/', {
             username,
             email,
             password,
-            re_password
-
+            re_password: confirmPassword
         })
 
         .then(response => {
@@ -30,12 +29,9 @@ function Signup() {
 
         })
 
-        .catch(error => {
-
-            console.log(error.response.data);
-
-            alert('Signup Failed');
-
+        .catch((error) => {
+        console.log(error.response.data);
+        alert(JSON.stringify(error.response.data));
         });
 
     };
@@ -74,6 +70,13 @@ function Signup() {
                     placeholder="Confirm Password"
                     style={styles.input}
                     onChange={(e) => setRePassword(e.target.value)}
+                />
+
+                <input
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                 />
 
                 <button style={styles.button} onClick={handleSignup}>

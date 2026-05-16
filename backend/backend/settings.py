@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'djoser',
     'corsheaders',
     'api',
+    'authsystem',
 ]
 
 MIDDLEWARE = [
@@ -130,14 +131,25 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
-    'LOGIN_FIELD': 'username',
     'USER_CREATE_PASSWORD_RETYPE': True,
+    'SEND_ACTIVATION_EMAIL': True,
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'SERIALIZERS': {},
+    'DOMAIN': 'localhost:3000',
+    'SITE_NAME': 'Event Attendance System',
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'balabag.kryzzeljane@gmail.com'
+
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'balabag.kryzzeljane@gmail.com'
-EMAIL_HOST_PASSWORD = 'vnjw qexq lzly sdot'
+EMAIL_HOST_USER = 'manlangit.joshuajay@gmail.com'
+EMAIL_HOST_PASSWORD = 'ljlfxalsucntgqpi'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+AUTH_USER_MODEL = 'auth.User' #==========
+DOMAIN = 'localhost:3000'
+SITE_NAME = 'Event Attendance System'
+EMAIL_FRONTEND_PROTOCOL = 'http'
+AUTH_USER_MODEL = 'authsystem.User'

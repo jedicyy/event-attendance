@@ -17,7 +17,7 @@ class ActivationRedirectView(APIView):
     permission_classes = []
 
     def get(self, request, uid, token):
-        return redirect(f'http://127.0.0.1:3000/activate/{uid}/{token}/')
+        return redirect(f'http://192.168.1.6:3000/activate/{uid}/{token}/')
 
 
 class EventViewSet(viewsets.ModelViewSet):

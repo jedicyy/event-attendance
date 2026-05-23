@@ -25,15 +25,14 @@ function AdminDashboard() {
         const token = localStorage.getItem('admin_token');
 
         if (!token) {
-
-            navigate('/admin');
-
+            navigate('/admin/login');
+            return;
         }
 
         fetchEvents();
         fetchAttendance();
 
-    }, []);
+    }, [navigate]);
 
     const fetchEvents = () => {
 

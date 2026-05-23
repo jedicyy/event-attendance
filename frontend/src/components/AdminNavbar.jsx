@@ -7,8 +7,9 @@ function AdminNavbar() {
     const logout = () => {
 
         localStorage.removeItem('admin_token');
+        localStorage.removeItem('token');
 
-        navigate('/admin');
+        navigate('/admin/login');
 
     };
 

@@ -1,42 +1,88 @@
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  SafeAreaView
+  ActivityIndicator
 } from "react-native";
-
-const events = [
-
-  {
-    id: "1",
-    title: "Python Seminar",
-    description: "Learn Python Basics",
-    location: "USTP Library"
-  },
-
-  {
-    id: "2",
-    title: "React Workshop",
-    description: "Frontend Development",
-    location: "Room 301"
-  },
-
-];
+import { SafeAreaView } from 'react-native-safe-area-context';
+import api from '../../constants/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
 
 export default function HomeScreen() {
 
-  const checkIn = (title: string) => {
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+  const router = useRouter();
 
-    alert(`Checked in to ${title}`);
+  const fetchEvents = useCallback(async (storedToken?: string | null) => {
+    setLoading(true);
+    try {
+      const tokenToUse = storedToken || token || await AsyncStorage.getItem('token');
+      if (!tokenToUse) {
+        router.replace('/login');
+        return;
+      }
 
+      const res = await api.get('/events/', { timeout: 10000 });
+      setEvents(res.data);
+    } catch (err) {
+      console.log('Failed to fetch events', err);
+      const e: any = err;
+      if (e.code === 'ECONNABORTED' || (e.message && e.message.toLowerCase().includes('timeout'))) {
+        alert('Failed to fetch events: request timed out.\n\nCheck your API host value (API_BASE) and network.\nIf using an Android emulator try http://10.0.2.2:8000, or adjust API_BASE in mobile/app files.');
+      } else if (e.response) {
+        alert('Failed to fetch events: ' + JSON.stringify(e.response.data));
+      } else {
+        alert('Failed to fetch events: ' + (e.message || 'Unknown error'));
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [token, router]);
+
+  useEffect(() => {
+    (async () => {
+      const stored = await AsyncStorage.getItem('token');
+      if (!stored) {
+        router.replace('/login');
+        return;
+      }
+      setToken(stored);
+      fetchEvents(stored);
+    })();
+  }, [fetchEvents, router]);
+
+  const checkIn = async (eventId: string) => {
+    try {
+      const stored = token || await AsyncStorage.getItem('token');
+      if (!stored) {
+        router.replace('/login');
+        return;
+      }
+      await api.post('/attendance/', { event: eventId, checked_in: true }, { timeout: 10000 });
+      alert('Checked in successfully');
+    } catch (err) {
+      console.log(err);
+      const e: any = err;
+      if (e.code === 'ECONNABORTED') alert('Check in failed: request timed out');
+      else alert('Check in failed');
+    }
   };
+
+  if (loading) return (
+    <SafeAreaView style={[styles.container,{justifyContent:'center'}]}>
+      <ActivityIndicator size="large" color="#1D4ED8" />
+    </SafeAreaView>
+  );
 
   return (
 
     <SafeAreaView style={styles.container}>
-
       {/* NAVBAR */}
 
       <View style={styles.navbar}>
@@ -45,12 +91,8 @@ export default function HomeScreen() {
           Smart Library
         </Text>
 
-        <TouchableOpacity style={styles.logoutBtn}>
-
-          <Text style={styles.logoutText}>
-            Logout
-          </Text>
-
+        <TouchableOpacity style={styles.logoutBtn} onPress={async () => { await AsyncStorage.removeItem('token'); router.replace('/login'); }}>
+          <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
 
       </View>
@@ -91,7 +133,7 @@ export default function HomeScreen() {
 
             <TouchableOpacity
               style={styles.button}
-              onPress={() => checkIn(item.title)}
+              onPress={() => checkIn(item.id)}
             >
 
               <Text style={styles.buttonText}>

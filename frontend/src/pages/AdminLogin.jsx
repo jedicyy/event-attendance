@@ -9,30 +9,40 @@ function AdminLogin() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
 
-        axios.post('http://127.0.0.1:8000/auth/jwt/create/', {
-            username,
-            password
-        })
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/api/auth/jwt/create/', {
+                username,
+                password
+            });
 
-        .then(response => {
+            const token = response.data.access;
+            localStorage.setItem('token', token);
+            localStorage.setItem('admin_token', token);
 
-            localStorage.setItem('admin_token', response.data.access);
+            // Set axios default header for subsequent requests
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+            // Verify admin role
+            const userResponse = await axios.get('http://127.0.0.1:8000/api/me/', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            if (userResponse.data.role !== 'admin') {
+                alert('You do not have admin privileges');
+                localStorage.removeItem('token');
+                localStorage.removeItem('admin_token');
+                return;
+            }
 
             alert('Admin Login Successful');
-
             navigate('/admin/dashboard');
 
-        })
-
-        .catch(error => {
-
+        } catch (error) {
             console.log(error);
-
-            alert('Invalid Credentials');
-
-        });
+            alert('Invalid Credentials or Access Denied');
+        }
 
     };
 

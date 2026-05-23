@@ -69,7 +69,7 @@ const styles = {
         padding: '10px 15px',
         border: 'none',
         cursor: 'pointer',
-        backgroundColor: '#DC2626',
+        backgroundColor: '#1E40AF',
         color: 'white',
         borderRadius: '5px'
     }

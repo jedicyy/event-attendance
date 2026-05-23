@@ -26,6 +26,9 @@ function Login() {
 
             localStorage.setItem("token", token);
 
+            // set axios default header for subsequent requests
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
             // GET CURRENT USER INFO
             const userResponse = await axios.get(
                 'http://127.0.0.1:8000/api/me/',

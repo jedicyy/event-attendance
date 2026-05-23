@@ -15,6 +15,9 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Use BigAutoField by default for auto-created primary keys
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -25,7 +28,7 @@ SECRET_KEY = 'django-insecure--^49ps9n4@z7odg#(u)0j-rn0+)lbml#!!i8d)!g$gzr4@v95a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -81,8 +84,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'event_db',
+        'USER': 'root',
+        'PASSWORD': 'password',
+        'HOST': 'db',
+        'PORT': '3306',
     }
 }
 
@@ -133,9 +140,8 @@ REST_FRAMEWORK = {
 DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': True,
     'SEND_ACTIVATION_EMAIL': True,
-    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'ACTIVATION_URL': 'api/activate/{uid}/{token}/',
     'SERIALIZERS': {},
-    'DOMAIN': 'localhost:3000',
     'SITE_NAME': 'Event Attendance System',
 }
 
@@ -148,8 +154,6 @@ EMAIL_HOST_USER = 'manlangit.joshuajay@gmail.com'
 EMAIL_HOST_PASSWORD = 'ljlfxalsucntgqpi'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-AUTH_USER_MODEL = 'auth.User' #==========
-DOMAIN = 'localhost:3000'
+AUTH_USER_MODEL = 'authsystem.User'
 SITE_NAME = 'Event Attendance System'
 EMAIL_FRONTEND_PROTOCOL = 'http'
-AUTH_USER_MODEL = 'authsystem.User'

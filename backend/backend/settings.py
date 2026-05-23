@@ -143,6 +143,8 @@ DJOSER = {
     'ACTIVATION_URL': 'api/activate/{uid}/{token}/',
     'SERIALIZERS': {},
     'SITE_NAME': 'Event Attendance System',
+    'DOMAIN': '192.168.100.14:8000',
+    'PROTOCOL': 'http',
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

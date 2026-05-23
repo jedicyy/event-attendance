@@ -15,7 +15,7 @@ const ActivateAccount = () => {
 
         console.log("Activating with:", { uid, token }); // Check these values
 
-        axios.post("http://127.0.0.1:8000/api/auth/users/activation/", { uid, token })
+        axios.post("http://192.168.100.14:8000/api/auth/users/activation/", { uid, token })
             .then((response) => {
                 console.log("Success:", response.data);
                 setStatus("Account activated! Redirecting to login...");

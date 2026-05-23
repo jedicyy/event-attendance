@@ -1,7 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BASE_URL = process.env.API_BASE || 'http://192.168.1.6:8000/api';
+const BASE_URL = process.env.API_BASE || 'http://192.168.100.14:8000/api';
 
 console.log('=== API Initialized ===');
 console.log('API BASE_URL:', BASE_URL);

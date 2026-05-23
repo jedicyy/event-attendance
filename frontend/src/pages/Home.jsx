@@ -16,7 +16,9 @@ function Home() {
         if (!token) navigate('/');
 
         // Fetch events
-        axios.get('http://127.0.0.1:8000/api/events/')
+        axios.get('http://127.0.0.1:8000/api/events/', {
+            headers: { Authorization: `Bearer ${token}` }
+        })
             .then(response => setEvents(response.data))
             .catch(error => console.log(error));
 
@@ -38,7 +40,6 @@ function Home() {
 
     const checkIn = (eventId) => {
         axios.post('http://127.0.0.1:8000/api/attendance/', {
-            user: 1,
             event: eventId,
             checked_in: true
         }, {

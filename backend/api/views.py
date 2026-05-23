@@ -1,3 +1,5 @@
+import token
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -15,7 +17,7 @@ class ActivationRedirectView(APIView):
     permission_classes = []
 
     def get(self, request, uid, token):
-        return redirect(f'http://192.168.100.14:3000/activate/{uid}/{token}/')
+        return redirect(f'http://127.0.0.1:3000/activate/{uid}/{token}/')
 
 
 class EventViewSet(viewsets.ModelViewSet):

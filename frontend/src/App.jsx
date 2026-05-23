@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import ActivateAccount from "./pages/ActivateAccount";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
 
@@ -54,7 +55,11 @@ function App() {
 
       <Route
         path="/admin/dashboard"
-        element={<AdminDashboard />}
+        element={
+          <ProtectedRoute requireAdmin>
+              <AdminDashboard />
+          </ProtectedRoute>
+        }
       />
 
     </Routes>

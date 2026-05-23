@@ -19,10 +19,10 @@ function AdminDashboard() {
     const [search, setSearch] = useState('');
 
     const [editingId, setEditingId] = useState(null);
+    const token = localStorage.getItem('admin_token');
+
 
     useEffect(() => {
-
-        const token = localStorage.getItem('admin_token');
 
         if (!token) {
             navigate('/admin/login');
@@ -35,39 +35,27 @@ function AdminDashboard() {
     }, [navigate]);
 
     const fetchEvents = () => {
-
-        axios.get('http://127.0.0.1:8000/api/events/')
-
-        .then(response => {
-
-            setEvents(response.data);
-
+        axios.get('http://127.0.0.1:8000/api/events/', {
+            headers: { Authorization: `Bearer ${token}` }
         })
-
+        .then(response => {
+            setEvents(response.data);
+        })
         .catch(error => {
-
             console.log(error);
-
         });
-
     };
 
     const fetchAttendance = () => {
-
-        axios.get('http://127.0.0.1:8000/api/attendance/')
-
-        .then(response => {
-
-            setAttendance(response.data);
-
+        axios.get('http://127.0.0.1:8000/api/attendance/', {
+            headers: { Authorization: `Bearer ${token}` }
         })
-
+        .then(response => {
+            setAttendance(response.data);
+        })
         .catch(error => {
-
             console.log(error);
-
         });
-
     };
 
     const createEvent = () => {
@@ -80,6 +68,8 @@ function AdminDashboard() {
                 description,
                 date,
                 location
+            }, {
+                headers: { Authorization: `Bearer ${token}` }
 
             })
 
@@ -112,6 +102,8 @@ function AdminDashboard() {
                 description,
                 date,
                 location
+            }, {
+                headers: { Authorization: `Bearer ${token}` }
 
             })
 
@@ -139,23 +131,16 @@ function AdminDashboard() {
     };
 
     const deleteEvent = (id) => {
-
-        axios.delete(`http://127.0.0.1:8000/api/events/${id}/`)
-
-        .then(response => {
-
-            alert('Event Deleted');
-
-            fetchEvents();
-
+        axios.delete(`http://127.0.0.1:8000/api/events/${id}/`, {
+            headers: { Authorization: `Bearer ${token}` }
         })
-
+        .then(response => {
+            alert('Event Deleted');
+            fetchEvents();
+        })
         .catch(error => {
-
             console.log(error);
-
         });
-
     };
 
     const editEvent = (event) => {

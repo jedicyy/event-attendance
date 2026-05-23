@@ -140,7 +140,7 @@ REST_FRAMEWORK = {
 DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': True,
     'SEND_ACTIVATION_EMAIL': True,
-    'ACTIVATION_URL': 'api/activate/{uid}/{token}/',
+    'ACTIVATION_URL': 'activate/{uid}/{token}/',
     'SERIALIZERS': {},
     'SITE_NAME': 'Event Attendance System',
     'DOMAIN': '192.168.100.14:8000',

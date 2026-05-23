@@ -59,6 +59,7 @@ function Home() {
                     alert('Check In Failed. Please try again.');
                 }      
             });
+    }; 
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -537,4 +538,3 @@ const styles = {
 };
 
 export default Home;
-}

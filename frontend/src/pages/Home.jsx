@@ -51,9 +51,14 @@ function Home() {
             })
             .catch(error => {
                 console.log(error);
-                alert('Check In Failed');
+                if (error.response?.status === 400) {
+                    alert('You have already checked in to this event.');
+                } else if (error.response?.status === 403) {
+                    alert('Access denied. You do not have permission to do this.');
+                } else {
+                    alert('Check In Failed. Please try again.');
+                }      
             });
-    };
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -82,6 +87,19 @@ function Home() {
                     <div style={styles.profileAvatar}>{userInfo.username?.[0]?.toUpperCase()}</div>
                     <h3>{userInfo.username}</h3>
                     <p>{userInfo.email}</p>
+                
+                <div style={{
+                    backgroundColor: '#22c55e',
+                    color: '#0f172a',
+                    padding: '4px 12px',
+                    borderRadius: '20px',
+                    fontSize: '12px',
+                    fontWeight: 'bold',
+                    marginTop: '8px',
+                    display: 'inline-block'
+                }}>
+                    {userInfo.role?.toUpperCase() || 'STUDENT'}
+                </div>
                 </div>
 
                 {/* Menu */}
@@ -519,3 +537,4 @@ const styles = {
 };
 
 export default Home;
+}

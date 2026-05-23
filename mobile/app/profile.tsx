@@ -18,7 +18,7 @@ export default function ProfileScreen({ onLogout }: { onLogout?: () => void }) {
           return;
         }
 
-        const res = await api.get('/auth/users/me/', { timeout: 10000 });
+        const res = await api.get('/me/', { timeout: 10000 });
         setUser(res.data);
       } catch (err) {
         console.log('Failed to fetch user', err);

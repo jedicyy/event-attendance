@@ -184,7 +184,43 @@ function AdminDashboard() {
 
                 <div style={styles.formCard}>
 
-                    <h2>Create Event</h2>
+                    <h2>{editingId ? '✏️ Editing Event' : 'Create Event'}</h2>
+                    {editingId && (
+                        <div style={{
+                            backgroundColor: '#FEF3C7',
+                            border: '2px solid #F59E0B',
+                            padding: '10px 15px',
+                            borderRadius: '8px',
+                            marginBottom: '15px',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center'
+                        }}>
+                            <span style={{ color: '#92400E', fontWeight: 'bold' }}>
+                                Editing: {title}
+                            </span>
+                            <button
+                                onClick={() => {
+                                    setEditingId(null);
+                                    setTitle('');
+                                    setDescription('');
+                                    setDate('');
+                                    setLocation('');
+                                }}
+                                style={{
+                                    backgroundColor: '#DC2626',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '6px 12px',
+                                    borderRadius: '6px',
+                                    cursor: 'pointer',
+                                    fontWeight: 'bold'
+                                }}
+                            >
+                                Cancel Edit
+                            </button>
+                        </div>
+                    )}
 
                     <input
                         type="text"
